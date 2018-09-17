@@ -1,9 +1,9 @@
 #include "Logger.h"
 #include <TimeLib.h>
 
-// uncomment/comment following line to stop/start debug print 
+#if DEBUG_LOGGER != 1
 #define NODEBUG_PRINT
-#include <debug_print.h>
+#endif
 
 const char *LogLevelStrings[] = {"FATAL","ERROR","WARN", "INFO", "DEBUG", "TRACE"};
 
