@@ -42,11 +42,15 @@ void Logger::log(LogLevel level, const char* module, const char* text, ...) {
 
     DEBUG_PRINT("[logger:log] going to log date=%s, level=%s, module=%s, text=%s\n", rec.datetime, LogLevelStrings[level], module, &rec.text[0]);
 
-    if (logWriter) 
+    if (logWriter) {
         useBuffer = logWriter->writeLogEntry(&rec.datetime[0], LogLevelStrings[level], module, &rec.text[0]) == 0;
+        DEBUG_PRINT("[logger:log] log writing failed\n");
+    } else {
+        DEBUG_PRINT("[logger:log] writer not configured.\n");
+    }
 
     if (useBuffer && logBuffer) { 
-        DEBUG_PRINT("[logger:log] writer failed -> going to use buffer\n");
+        DEBUG_PRINT("[logger:log] going to use buffer\n");
         strncpy(&rec.level[0], LogLevelStrings[level], BUFFER_RECORD_LEVEL_SIZE);
         rec.level[BUFFER_RECORD_LEVEL_SIZE-1]=0;
         strncpy(&rec.module[0], module,BUFFER_RECORD_MODULE_SIZE);
