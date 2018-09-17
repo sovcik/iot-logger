@@ -54,3 +54,17 @@ void Logger::log(LogLevel level, const char* module, const char* text, ...) {
     }
 
 }
+
+void Logger::processBuffer(){
+    if (!logBuffer || logBuffer->isEmpty() || !logWriter) 
+        return;
+
+    LogRecord rec;
+    if (logBuffer->read(&rec)){  // if there is new record
+        DEBUG_PRINT("[logger:proLog] processing buffered log entry. date=%s, text=%s\n",&rec.datetime[0], &rec.text[0]);
+        int r = logWriter->writeLogEntry( &rec.datetime[0], &rec.level[0], &rec.module[0], &rec.text[0]);
+        if (!r) // TODO: if write failed - put it back to log?
+            DEBUG_PRINT("[logger:proLog] failed writing log entry - log entry lost\n");
+    }
+
+}

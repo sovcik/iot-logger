@@ -25,6 +25,7 @@ class Logger {
         void setLevel(LogLevel level);
         void setLogWriter(LogWriter *logWriter);
         void setBuffer(LogBuffer *logBuffer);
+        void processBuffer();
 
 };
 
