@@ -43,7 +43,7 @@ void Logger::log(LogLevel level, const char* module, const char* text, ...) {
     if (logWriter) 
         useBuffer = logWriter->writeLogEntry(&rec.datetime[0], LogLevelStrings[level], module, &rec.text[0]) == 0;
 
-    if (useBuffer) { 
+    if (useBuffer && logBuffer) { 
         DEBUG_PRINT("[logger:log] writer failed -> going to use buffer\n");
         strncpy(&rec.level[0], LogLevelStrings[level], BUFFER_RECORD_LEVEL_SIZE);
         rec.level[BUFFER_RECORD_LEVEL_SIZE-1]=0;
