@@ -26,6 +26,7 @@ class LogBuffer {
         virtual int write(LogRecord *rec)=0; // should return zero if read failed
         
         virtual int isReady()=0;
+        virtual int isEmpty()=0;
 };
 
 #endif
