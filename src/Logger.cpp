@@ -25,17 +25,21 @@ void Logger::setBuffer(LogBuffer *logBuffer) {
 }
 
 
-void Logger::log(LogLevel level, const char* module, const char* text) {
-
-    bool useBuffer = true;
+void Logger::log(LogLevel level, const char* module, const char* text, ...) {
     LogRecord rec;
+    bool useBuffer = true;
+
+    va_list argptr;
+    va_start(argptr, text);
+    vsnprintf(&rec.text[0], BUFFER_RECORD_TEXT_SIZE, text, argptr);
+    va_end(argptr);
 
     sprintf(&rec.datetime[0],"%d-%02d-%02dT%02d:%02d:%02dZ",year(), month(), day(), hour(), minute(), second());
 
-    DEBUG_PRINT("[logger:log] going to log date=%s, level=%s, module=%s, text=%s\n", rec.datetime, LogLevelStrings[level], module, text);
+    DEBUG_PRINT("[logger:log] going to log date=%s, level=%s, module=%s, text=%s\n", rec.datetime, LogLevelStrings[level], module, &txt[0]);
 
     if (logWriter) 
-        useBuffer = logWriter->write(&rec.datetime[0], LogLevelStrings[level], module, text) == 0;
+        useBuffer = logWriter->write(&rec.datetime[0], LogLevelStrings[level], module, &rec.text[0]) == 0;
 
     if (useBuffer) { 
         DEBUG_PRINT("[logger:log] writer failed -> going to use buffer\n");
@@ -43,8 +47,6 @@ void Logger::log(LogLevel level, const char* module, const char* text) {
         rec.level[BUFFER_RECORD_LEVEL_SIZE-1]=0;
         strncpy(&rec.module[0], module,BUFFER_RECORD_MODULE_SIZE);
         rec.module[BUFFER_RECORD_MODULE_SIZE-1]=0;
-        strncpy(&rec.text[0], text, BUFFER_RECORD_TEXT_SIZE);
-        rec.text[BUFFER_RECORD_TEXT_SIZE-1]=0;
         //DEBUG_PRINT("[logger:log] date=%s, module=%s, text=%s\n",rec.datetime, rec.module, rec.text);
         logBuffer->write(&rec);
     }

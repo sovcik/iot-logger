@@ -21,7 +21,7 @@ class Logger {
 
     public:
         Logger();
-        void log(LogLevel level, const char* module, const char* text);
+        void log(LogLevel level, const char* module, const char* text, ...);
         void setLevel(LogLevel level);
         void setLogWriter(LogWriter *logWriter);
         void setBuffer(LogBuffer *logBuffer);
