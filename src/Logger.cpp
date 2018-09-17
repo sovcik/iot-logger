@@ -28,6 +28,8 @@ void Logger::setBuffer(LogBuffer *logBuffer) {
 void Logger::log(LogLevel level, const char* module, const char* text, ...) {
     LogRecord rec;
     bool useBuffer = true;
+    
+    if (level > activeLevel) return 0;
 
     va_list argptr;
     va_start(argptr, text);
