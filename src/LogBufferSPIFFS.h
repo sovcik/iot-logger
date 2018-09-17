@@ -30,7 +30,7 @@ class LogBufferSPIFFS : public LogBuffer {
         void begin(int clear = 0) override;
         void stop() override;
         int isReady() override;
-        int isEmpty() { return _noNewRecords;} override;
+        int isEmpty() override { return _noNewRecords;};
         
         unsigned int size() override;
         int write(LogRecord *rec) override;
