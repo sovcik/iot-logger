@@ -5,6 +5,8 @@
 #define NODEBUG_PRINT
 #endif
 
+#include <debug_print.h>
+
 const char *LogLevelStrings[] = {"FATAL","ERROR","WARN", "INFO", "DEBUG", "TRACE"};
 
 Logger::Logger() {
@@ -38,7 +40,7 @@ void Logger::log(LogLevel level, const char* module, const char* text, ...) {
 
     sprintf(&rec.datetime[0],"%d-%02d-%02dT%02d:%02d:%02dZ",year(), month(), day(), hour(), minute(), second());
 
-    DEBUG_PRINT("[logger:log] going to log date=%s, level=%s, module=%s, text=%s\n", rec.datetime, LogLevelStrings[level], module, &txt[0]);
+    DEBUG_PRINT("[logger:log] going to log date=%s, level=%s, module=%s, text=%s\n", rec.datetime, LogLevelStrings[level], module, &rec.text[0]);
 
     if (logWriter) 
         useBuffer = logWriter->writeLogEntry(&rec.datetime[0], LogLevelStrings[level], module, &rec.text[0]) == 0;
