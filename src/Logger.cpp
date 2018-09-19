@@ -44,7 +44,8 @@ void Logger::log(LogLevel level, const char* module, const char* text, ...) {
 
     if (logWriter) {
         useBuffer = logWriter->writeLogEntry(&rec.datetime[0], LogLevelStrings[level], module, &rec.text[0]) == 0;
-        DEBUG_PRINT("[logger:log] log writing failed\n");
+        if (useBuffer) 
+            DEBUG_PRINT("[logger:log] log writing failed\n");
     } else {
         DEBUG_PRINT("[logger:log] writer not configured.\n");
     }
