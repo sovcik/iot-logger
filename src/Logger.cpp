@@ -18,6 +18,15 @@ void Logger::setLevel(LogLevel level) {
     activeLevel = level;
 }
 
+void Logger::setLevel(const char *level) {
+    int i = 0;
+    while (i<6 && strcmp(level,LogLevelStrings[i]) != 0)
+        i++;
+    if (i<6)
+        setLevel((LogLevel)i);
+}
+
+
 void Logger::setLogWriter(LogWriter *logWriter) {
     this->logWriter = logWriter;
 }

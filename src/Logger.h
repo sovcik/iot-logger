@@ -23,6 +23,7 @@ class Logger {
         Logger();
         void log(LogLevel level, const char* module, const char* text, ...);
         void setLevel(LogLevel level);
+        void setLevel(const char *level);
         void setLogWriter(LogWriter *logWriter);
         void setBuffer(LogBuffer *logBuffer);
         void processBuffer();
