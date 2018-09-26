@@ -18,6 +18,10 @@ class Logger {
         LogLevel activeLevel;
         LogWriter *logWriter;
         LogBuffer *logBuffer;
+        
+        // override this method order to provide correct
+        // time zone offset in seconds to method log
+        virtual int getTimeZoneOffset(); 
 
     public:
         Logger();
