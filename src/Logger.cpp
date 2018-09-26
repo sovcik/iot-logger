@@ -7,7 +7,7 @@
 
 #include <debug_print.h>
 
-const char *LogLevelStrings[] = {"FATAL","ERROR","WARN", "INFO", "DEBUG", "TRACE"};
+const char *LogLevelStrings[] = {"fatal","error","warn", "info", "debug", "trace"};
 
 Logger::Logger() {
     activeLevel = ERROR;
