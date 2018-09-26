@@ -35,7 +35,7 @@ void Logger::setBuffer(LogBuffer *logBuffer) {
     this->logBuffer = logBuffer;
 }
 
-void Logger::getISOTime(char *buff, type_t size) {
+void Logger::getISOTime(char *buff, size_t size) {
     // return time zone offset in seconds - both positive and negative - depending on time zone
     // override this method depending on your implementation of time zone handling
     snprintf(buff, size, "%d-%02d-%02dT%02d:%02d:%02dZ", year(), month(), day(), hour(), minute(), second());

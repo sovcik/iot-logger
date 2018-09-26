@@ -21,7 +21,7 @@ class Logger {
         
         // override this method order to provide correct
         // time in ISO format to method log
-        virtual void getISOTime(char *buff, type_t size);
+        virtual void getISOTime(char *buff, size_t size);
 
     public:
         Logger();
