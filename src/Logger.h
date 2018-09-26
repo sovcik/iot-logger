@@ -20,8 +20,8 @@ class Logger {
         LogBuffer *logBuffer;
         
         // override this method order to provide correct
-        // time zone offset in seconds to method log
-        virtual int getTimeZoneOffset(); 
+        // time in ISO format to method log
+        virtual void getISOTime(char *buff, type_t size);
 
     public:
         Logger();

@@ -35,10 +35,10 @@ void Logger::setBuffer(LogBuffer *logBuffer) {
     this->logBuffer = logBuffer;
 }
 
-int Logger::getTimeZoneOffset() {
+void Logger::getISOTime(char *buff, type_t size) {
     // return time zone offset in seconds - both positive and negative - depending on time zone
     // override this method depending on your implementation of time zone handling
-    return 0;
+    snprintf(buff, size, "%d-%02d-%02dT%02d:%02d:%02dZ", year(), month(), day(), hour(), minute(), second());
 }
 
 
@@ -53,11 +53,7 @@ void Logger::log(LogLevel level, const char* module, const char* text, ...) {
     vsnprintf(&rec.text[0], BUFFER_RECORD_TEXT_SIZE, text, argptr);
     va_end(argptr);
 
-    int tzo = getTimeZoneOffset();
-    if (tzo == 0)
-        sprintf(&rec.datetime[0],"%d-%02d-%02dT%02d:%02d:%02dZ",year(), month(), day(), hour(), minute(), second());
-    else
-        sprintf(&rec.datetime[0],"%d-%02d-%02dT%02d:%02d:%02d%c%02d:%02d",year(), month(), day(), hour(), minute(), second(),tzo>=0?'+':'-',tzo/3600,(tzp%3600)/60);
+    getISOTime(&rec.datetime[0],BUFFER_RECORD_DATE_SIZE);
 
     DEBUG_PRINT("[logger:log] going to log date=%s, level=%s, module=%s, text=%s\n", rec.datetime, LogLevelStrings[level], module, &rec.text[0]);
 
