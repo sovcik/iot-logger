@@ -1,7 +1,8 @@
 #include "LogBufferSPIFFS.h"
 
-// uncomment/comment following line to stop/start debug print 
+#if DEBUG_LOGGER != 1
 #define NODEBUG_PRINT
+#endif
 #include <debug_print.h>
 
 #define MARK_NEW 'N'
