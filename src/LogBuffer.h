@@ -18,7 +18,7 @@ struct LogRecord {
 class LogBuffer {
 
     public:
-        virtual void begin(int clear = 0);
+        virtual int begin(int clear = 0);  // returns zero if failed
         virtual void stop();
         
         virtual unsigned int size()=0;

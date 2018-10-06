@@ -26,8 +26,8 @@ class LogBufferSPIFFS : public LogBuffer {
 
     public:
         LogBufferSPIFFS(const char* logFName, unsigned int size = BUFFER_MAX_RECORDS, int circular = 1);
-        ~LogBufferSPIFFS();
-        void begin(int clear = 0) override;
+        virtual ~LogBufferSPIFFS();
+        int begin(int clear = 0) override;
         void stop() override;
         int isReady() override;
         int isEmpty() override { return _noNewRecords;};
