@@ -30,6 +30,7 @@ class Logger {
         void setLevel(const char *level);
         void setLogWriter(LogWriter *logWriter);
         void setBuffer(LogBuffer *logBuffer);
+        LogBuffer* getBuffer();
         void processBuffer();
 
 };

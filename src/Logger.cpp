@@ -12,6 +12,7 @@ const char *LogLevelStrings[] = {"fatal","error","warn", "info", "debug", "trace
 Logger::Logger() {
     activeLevel = ERROR;
     logWriter = NULL;
+    logBuffer = NULL;
 }
 
 void Logger::setLevel(LogLevel level) {
@@ -33,6 +34,10 @@ void Logger::setLogWriter(LogWriter *logWriter) {
 
 void Logger::setBuffer(LogBuffer *logBuffer) {
     this->logBuffer = logBuffer;
+}
+
+LogBuffer* Logger::getBuffer(){
+    return logBuffer;
 }
 
 void Logger::getISOTime(char *buff, size_t size) {
