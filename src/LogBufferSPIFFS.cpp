@@ -143,7 +143,8 @@ int LogBufferSPIFFS::read(LogRecord *rec){
     size_t recSize = sizeof(*rec);
     
     _logFile.seek(_rfilepos, SeekSet);
-    if (!_noNewRecords && _circular && _logFile.available() >= recSize && _logFile.size() > 0){
+    //DEBUG_PRINT("*[lbSPF:read] nr=%d, cir=%d, avail=%lu, size=%lu\n",_noNewRecords, _circular, _logFile.available(), _logFile.size());
+    if (!_noNewRecords && _circular && _logFile.size() > 0){
         _rfilepos = seekNext(MARK_NEW, 1);
         if (!_logFile.available()){ // reached end trying to find next NEW record
             _noNewRecords = 1;
