@@ -25,6 +25,7 @@ class Logger {
 
     public:
         Logger();
+        virtual ~Logger();
         void log(LogLevel level, const char* module, const char* text, ...);
         void setLevel(LogLevel level);
         void setLevel(const char *level);

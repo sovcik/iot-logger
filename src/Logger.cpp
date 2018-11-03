@@ -1,4 +1,5 @@
 #include "Logger.h"
+#include <Arduino.h>
 #include <TimeLib.h>
 
 #if DEBUG_LOGGER != 1
@@ -13,6 +14,10 @@ Logger::Logger() {
     activeLevel = ERROR;
     logWriter = NULL;
     logBuffer = NULL;
+}
+
+Logger::~Logger(){
+    
 }
 
 void Logger::setLevel(LogLevel level) {
