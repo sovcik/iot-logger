@@ -46,7 +46,6 @@ int LogBufferSPIFFS::begin(int clear){
         return 0;
     }
 
-    //DEBUG_PRINT("[lbSPF:begin] rpos=%lu wpos=%lu\n", _rfilepos, _wfilepos);
     // set reading position to the first "new" record or EOF, start search from begin
     _rfilepos = seekNext(MARK_NEW, 1);
 
@@ -58,7 +57,7 @@ int LogBufferSPIFFS::begin(int clear){
         _noNewRecords = 1;
     }
 
-    //DEBUG_PRINT("[lbSPF:begin] adjusted rpos=%lu wpos=%lu\n", _rfilepos, _wfilepos);
+    DEBUG_PRINT("[lbSPF:begin] adjusted rpos=%lu wpos=%lu\n", _rfilepos, _wfilepos);
 
     return 1;
 }
@@ -93,9 +92,7 @@ uint32_t LogBufferSPIFFS::seekNext(char what, int fromStart){
     size_t rr = r;
 
     while (buffer.mark != what && r == rr && _logFile.available()) {
-        //DEBUG_PRINT("here3 pos=%d avail=%d mark=%c what=%c\n",_logFile.position(), _logFile.available(), buffer.mark, what);
         r = _logFile.read((uint8_t*)&buffer, rr);
-        //DEBUG_PRINT("read=%d\n", r);
     }
 
     // if new record found, start reading from there
@@ -116,16 +113,10 @@ uint32_t LogBufferSPIFFS::seekNext(char what, int fromStart){
 int LogBufferSPIFFS::write(LogRecord *rec){
     int16_t ret = 0;
 
-    LogRecord r2;
-
-    //DEBUG_PRINT("[lbSPF:write] date=%s, module=%s, text=%s\n",rec->datetime, rec->module, rec->text);
-
     if (!_logFile) {
         DEBUG_PRINT("[lbSPF:write] logfile not available\n");
         return 0;
     }
-
-    //DEBUG_PRINT("[lbSPF:write] wpos1=%lu, size=%d, record=%d\n",_wfilepos, _size, _wfilepos / sizeof(*rec));
 
     if (_circular && ((_wfilepos / sizeof(*rec)) >= _size))
         _wfilepos = 0;
@@ -135,16 +126,11 @@ int LogBufferSPIFFS::write(LogRecord *rec){
 
     rec->mark = MARK_NEW;  
 
-    //DEBUG_PRINT("[lbSPF:write] pos=%lu buff=",_logFile.position());
-    //DEBUG_ARRAYF((uint8_t*)rec,sizeof(*rec),"%c.");
-    //DEBUG_PRINT("\n");
-
     ret = _logFile.write((uint8*)rec, sizeof(*rec));
 
     _logFile.flush();
 
     _wfilepos = _logFile.position();
-    //DEBUG_PRINT("[lbSPF:write] wpos3=%lu\n",_wfilepos);
 
     _noNewRecords = 0; // there is at least this new record
 
@@ -153,8 +139,8 @@ int LogBufferSPIFFS::write(LogRecord *rec){
 
 
 int LogBufferSPIFFS::read(LogRecord *rec){
-    //DEBUG_PRINT("[lbSPF:read] rpos1=%lu\n",_rfilepos);
-    int recSize = sizeof(*rec);
+    DEBUG_PRINT("[lbSPF:read] rpos1=%lu\n",_rfilepos);
+    size_t recSize = sizeof(*rec);
     
     _logFile.seek(_rfilepos, SeekSet);
     if (!_noNewRecords && _circular && _logFile.available() >= recSize && _logFile.size() > 0){
@@ -171,19 +157,13 @@ int LogBufferSPIFFS::read(LogRecord *rec){
     }
 
     //DEBUG_PRINT("[lbSPF:read] rpos2=%lu size=%d\n",_logFile.position(),sizeof(*rec));
-    uint r = _logFile.read((uint8_t*)rec, recSize);
+    size_t r = _logFile.read((uint8_t*)rec, recSize);
 
     if (r != recSize){
-        DEBUG_PRINT("[lbSPF:read] record not read - buffer most likely corrupted\n");
+        DEBUG_PRINT("[lbSPF:read] read only %lu bytes - buffer most likely corrupted\n",r);
         return 0;
     }
 
-    //DEBUG_PRINT("[lbSPF:read] read=%lu buff=",r);
-    //DEBUG_ARRAYF((uint8_t*)rec,sizeof(*rec),"%c.");
-    //DEBUG_PRINT("\n");
-
-
-    //DEBUG_PRINT("[lbSPF:read] mark=%c, dt=%s, level=%s, mod=%s, txt=%s\n", rec->mark, rec->datetime, rec->level, rec->module, rec->text);
     if (rec->mark == MARK_NEW) {
         uint32_t op = _rfilepos;
         _rfilepos = _logFile.position();
