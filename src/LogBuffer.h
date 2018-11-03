@@ -24,6 +24,7 @@ class LogBuffer {
         virtual unsigned int size()=0;
         virtual int read(LogRecord *rec)=0; // should return zero if read failed
         virtual int write(LogRecord *rec)=0; // should return zero if read failed
+        virtual void flush(){stop();begin(1);};
         
         virtual int isReady()=0;
         virtual int isEmpty()=0;

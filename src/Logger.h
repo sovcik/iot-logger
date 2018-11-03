@@ -32,6 +32,7 @@ class Logger {
         void setBuffer(LogBuffer *logBuffer);
         LogBuffer* getBuffer();
         void processBuffer();
+        void flushBuffer();
 
 };
 

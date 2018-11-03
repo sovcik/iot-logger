@@ -95,3 +95,8 @@ void Logger::processBuffer(){
     }
 
 }
+
+void Logger::flushBuffer(){
+    if (!logBuffer) return;
+    logBuffer->flush();
+}
