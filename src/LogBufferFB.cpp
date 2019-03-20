@@ -32,7 +32,10 @@ void LogBufferFB::stop(){
 
 
 int LogBufferFB::write(LogRecord *rec){
-    if (!fb.isReady()) return 0;
+    if (!fb.isReady()) {
+        DEBUG_PRINT("[lbFB:write] ERROR buffer not ready\n");
+        return 0;
+    }
 
     DEBUG_PRINT("[lbFB:write] writing to log buffer date=%s\n",rec->datetime);
     fb.push(*rec);
