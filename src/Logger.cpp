@@ -67,12 +67,16 @@ void Logger::log(LogLevel level, const char* module, const char* text, ...) {
 
     DEBUG_PRINT("[logger:log] going to log date=%s, level=%s, module=%s, text=%s\n", rec.datetime, LogLevelStrings[level], module, &rec.text[0]);
 
-    if (logWriter) {
-        useBuffer = logWriter->writeLogEntry(&rec.datetime[0], LogLevelStrings[level], module, &rec.text[0]) == 0;
-        if (useBuffer) 
-            DEBUG_PRINT("[logger:log] log writing failed\n");
-    } else {
-        DEBUG_PRINT("[logger:log] writer not configured.\n");
+    // in order to make sure log records will be written (e.g. sent to server) in the right order
+    // write directly only if buffer is already empty
+    if (!logBuffer || logBuffer->isEmpty()){
+        if (logWriter) {
+            useBuffer = logWriter->writeLogEntry(&rec.datetime[0], LogLevelStrings[level], module, &rec.text[0]) == 0;
+            if (useBuffer) 
+                DEBUG_PRINT("[logger:log] log writing failed\n");
+        } else {
+            DEBUG_PRINT("[logger:log] writer not configured.\n");
+        }
     }
 
     if (useBuffer && logBuffer) { 
