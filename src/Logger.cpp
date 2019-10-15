@@ -2,10 +2,7 @@
 #include <Arduino.h>
 #include <TimeLib.h>
 
-#if DEBUG_LOGGER != 1
 #define NODEBUG_PRINT
-#endif
-
 #include <debug_print.h>
 
 const char* Logger::LogLevelStrings[] = {"fatal","error","warn","info","debug","trace"};
