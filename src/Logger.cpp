@@ -8,7 +8,7 @@
 
 #include <debug_print.h>
 
-const char *LogLevelStrings[] = {"fatal","error","warn", "info", "debug", "trace"};
+const char* Logger::LogLevelStrings[] = {"fatal","error","warn","info","debug","trace"};
 
 Logger::Logger() {
     activeLevel = ERROR;
@@ -26,7 +26,7 @@ void Logger::setLevel(LogLevel level) {
 
 void Logger::setLevel(const char *level) {
     int i = 0;
-    while (i<6 && strcmp(level,LogLevelStrings[i]) != 0)
+    while (i<6 && strcmp(level,Logger::LogLevelStrings[i]) != 0)
         i++;
     if (i<6)
         setLevel((LogLevel)i);

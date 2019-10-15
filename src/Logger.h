@@ -35,6 +35,8 @@ class Logger {
         void processBuffer();
         void flushBuffer();
 
+        static const char* LogLevelStrings[];
+
 };
 
 #endif
