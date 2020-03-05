@@ -15,7 +15,7 @@ class ConsoleLogWriter : public LogWriter {
 
     public:
         ConsoleLogWriter(Print *serial){ _os = serial;}
-        virtual ~ConsoleLogWriter(){_os->flush();}
+        virtual ~ConsoleLogWriter(){}
         int writeLogEntry(const char* datetime, const char* loglevel, const char* module, const char* text){
             _os->printf("%s %s [%s] %s\n", datetime, loglevel, module, text);
             return 1;
