@@ -5,7 +5,7 @@
 #include "LogBuffer.h"
 #include "FileBuffer.h"
 
-#define BUFFER_MAX_RECORDS  300
+#define BUFFER_MAX_RECORDS  50
 
 class LogBufferFB : public LogBuffer {
     protected:
